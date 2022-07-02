@@ -18,7 +18,4 @@ class HideCharacterLine extends RemoveObjectLine {
     bool wait = true,
     Duration duration = const Duration(milliseconds: 500),
   }) : super(Character(asset, duration: duration), wait: wait);
-
-  @override
-  Future<void> execute() => object.init();
 }

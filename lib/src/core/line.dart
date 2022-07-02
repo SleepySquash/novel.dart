@@ -27,7 +27,7 @@ class AddObjectLine extends Line with Awaitable {
 }
 
 /// [Line] removing the provided [object] from the scene.
-class RemoveObjectLine extends Line with Awaitable {
+class RemoveObjectLine extends Line {
   const RemoveObjectLine(this.object, {this.wait = true});
 
   final NovelObject object;

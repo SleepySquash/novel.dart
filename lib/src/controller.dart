@@ -3,10 +3,12 @@ import 'package:get/get.dart';
 import 'core/line.dart';
 import 'core/object.dart';
 import 'core/scenario.dart';
+import 'line/wait.dart';
 import 'object/backdrop.dart';
 import 'object/background.dart';
 import 'object/character.dart';
 import 'object/dialogue.dart';
+import 'util/log.dart';
 
 class NovelController extends GetxController {
   NovelController(this.scenario, {this.onEnd});
@@ -32,6 +34,7 @@ class NovelController extends GetxController {
   }
 
   Future<void> thread() async {
+    Log.print('Thread 0 started');
     Line? line;
 
     do {
@@ -39,6 +42,7 @@ class NovelController extends GetxController {
       currentLine.value = currentLine.value + 1;
 
       if (line is AddObjectLine) {
+        Log.print('Adding ${line.object} to the scene');
         if (line.object is Background) {
           objects.removeWhere((e) => e is Background);
           objects.insert(0, line.object);
@@ -58,6 +62,7 @@ class NovelController extends GetxController {
           objects.add(line.object);
         }
       } else if (line is RemoveObjectLine) {
+        Log.print('Removing ${line.object} from the scene');
         var object = line.object;
         if (object is Background) {
           objects
@@ -67,6 +72,8 @@ class NovelController extends GetxController {
         } else if (object is Character) {
           objects.removeWhere((e) => e is Character && e.asset == object.asset);
         }
+      } else if (line is WaitLine) {
+        Log.print('Waiting for ${line.duration}');
       }
 
       if (line is Awaitable) {
@@ -77,5 +84,6 @@ class NovelController extends GetxController {
     } while (line != null);
 
     onEnd?.call();
+    Log.print('Thread 0 ended');
   }
 }
