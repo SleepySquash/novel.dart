@@ -9,6 +9,7 @@ import 'object/backdrop.dart';
 import 'object/background.dart';
 import 'object/character.dart';
 import 'object/dialogue.dart';
+import 'util/log.dart';
 import 'widget/animated_backdrop.dart';
 import 'widget/delayed_opacity.dart';
 import 'widget/dialogue.dart';
@@ -27,6 +28,12 @@ class Novel extends StatelessWidget {
   ///
   /// Calls the [Navigator.pop], if `null`.
   final void Function()? onEnd;
+
+  /// Enables or disables the logging.
+  static void setLogging(bool value) => Log.enabled = value;
+
+  static String backgrounds = 'assets/background';
+  static String characters = 'assets/character';
 
   /// Displays a dialog with the provided [scenario] above the current contents.
   static Future<T?> show<T extends Object?>({
@@ -83,7 +90,7 @@ class Novel extends StatelessWidget {
           duration: e.duration,
           onEnd: e.unlock,
           child: Image(
-            image: AssetImage('assets/background/${e.asset}'),
+            image: AssetImage('$backgrounds/${e.asset}'),
             fit: BoxFit.cover,
           ),
         ),
@@ -96,7 +103,7 @@ class Novel extends StatelessWidget {
           duration: e.duration,
           onEnd: e.unlock,
           child: Image(
-            image: AssetImage('assets/character/${e.asset}'),
+            image: AssetImage('$characters/${e.asset}'),
             fit: BoxFit.fitHeight,
           ),
         ),
