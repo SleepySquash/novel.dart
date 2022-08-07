@@ -124,13 +124,13 @@ class _DialogueWidgetState extends State<DialogueWidget> {
   void _progress() {
     Future.delayed(10.milliseconds, () {
       if (mounted) {
-        if (_i >= widget.text.length - 1) {
+        if (_i >= widget.text.length) {
           setState(() => _text = '$_text」');
         } else {
           ++_i;
           setState(() => _text = '「${widget.text.substring(0, _i)}');
 
-          if (_i < widget.text.length) {
+          if (_i <= widget.text.length) {
             _progress();
           } else {
             _text = '$_text」';

@@ -34,6 +34,8 @@ class Novel extends StatelessWidget {
 
   static String backgrounds = 'assets/background';
   static String characters = 'assets/character';
+  static String voices = 'voice';
+  static String musics = 'music';
 
   /// Displays a dialog with the provided [scenario] above the current contents.
   static Future<T?> show<T extends Object?>({

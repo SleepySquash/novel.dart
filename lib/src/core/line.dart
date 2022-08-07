@@ -32,7 +32,6 @@ class RemoveObjectLine extends Line {
 
   final NovelObject object;
 
-  @override
   final bool wait;
 
   @override
