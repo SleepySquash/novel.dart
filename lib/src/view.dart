@@ -104,9 +104,12 @@ class Novel extends StatelessWidget {
         child: AnimatedDelayedOpacity(
           duration: e.duration,
           onEnd: e.unlock,
-          child: Image(
-            image: AssetImage('$characters/${e.asset}'),
-            fit: BoxFit.fitHeight,
+          child: SizedBox(
+            height: double.infinity,
+            child: Image(
+              image: AssetImage('$characters/${e.asset}'),
+              fit: BoxFit.fitHeight,
+            ),
           ),
         ),
       );
