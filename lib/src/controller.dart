@@ -1,5 +1,5 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart';
 
 import 'core/line.dart';
 import 'core/object.dart';
@@ -29,10 +29,10 @@ class NovelController extends GetxController {
   final RxList<NovelObject> objects = RxList();
 
   /// [AudioPlayer] playing the voice lines.
-  final AudioPlayer voice = AudioPlayer(playerId: 'voice');
+  final AudioPlayer voice = AudioPlayer();
 
   /// [AudioPlayer] playing the ambient music.
-  final AudioPlayer ambient = AudioPlayer(playerId: 'ambient');
+  final AudioPlayer ambient = AudioPlayer();
 
   /// Callback, called when the [Novel] ends reading its [scenario].
   ///
@@ -41,6 +41,8 @@ class NovelController extends GetxController {
 
   @override
   void onInit() {
+    ambient.setLoopMode(LoopMode.one);
+
     thread();
     super.onInit();
   }
@@ -53,10 +55,8 @@ class NovelController extends GetxController {
 
   @override
   void onClose() {
-    ambient.stop();
-    ambient.release();
-    voice.stop();
-    voice.release();
+    ambient.dispose();
+    voice.dispose();
     super.onClose();
   }
 
@@ -85,7 +85,10 @@ class NovelController extends GetxController {
           objects.removeWhere((e) => e is Dialogue);
 
           if (line.voice != null) {
-            voice.play(AssetSource('${Novel.voices}/${line.voice}'));
+            voice
+                .setAsset('assets/${Novel.voices}/${line.voice}')
+                .then((_) => voice.play());
+            ;
           }
 
           line.object.key = previous?.key ?? line.object.key;
@@ -109,7 +112,9 @@ class NovelController extends GetxController {
         Log.print('Waiting for ${line.duration}');
       } else if (line is MusicLine) {
         Log.print('Playing ${line.asset}');
-        ambient.play(AssetSource('${Novel.musics}/${line.asset}'));
+        ambient
+            .setAsset('assets/${Novel.musics}/${line.asset}')
+            .then((_) => ambient.play());
       } else if (line is StopMusicLine) {
         Log.print('Stopping any music being played');
         ambient.stop();
