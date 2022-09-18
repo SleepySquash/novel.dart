@@ -117,7 +117,10 @@ class NovelController extends GetxController {
       }
 
       if (line is Awaitable) {
-        voice.stop();
+        if (voice.state != PlayerState.stopped) {
+          voice.stop();
+        }
+
         if (line.wait) {
           await line.execute();
         }
