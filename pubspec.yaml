@@ -8,13 +8,11 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  audioplayers: ^1.0.1
   bordered_text: ^2.0.0
   flutter:
     sdk: flutter
   get: ^4.6.5
-  just_audio_mpv: ^0.1.4
-  just_audio_windows: ^0.1.0
-  just_audio: ^0.9.28
   mutex: ^3.0.0
 
 dev_dependencies:

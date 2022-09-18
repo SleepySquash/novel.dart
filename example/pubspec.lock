@@ -8,13 +8,55 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.9.0"
-  audio_session:
+  audioplayers:
     dependency: transitive
     description:
-      name: audio_session
+      name: audioplayers
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.10"
+    version: "1.0.1"
+  audioplayers_android:
+    dependency: transitive
+    description:
+      name: audioplayers_android
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
+  audioplayers_darwin:
+    dependency: transitive
+    description:
+      name: audioplayers_darwin
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
+  audioplayers_linux:
+    dependency: transitive
+    description:
+      name: audioplayers_linux
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
+  audioplayers_platform_interface:
+    dependency: transitive
+    description:
+      name: audioplayers_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
+  audioplayers_web:
+    dependency: transitive
+    description:
+      name: audioplayers_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
+  audioplayers_windows:
+    dependency: transitive
+    description:
+      name: audioplayers_windows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -57,13 +99,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.2"
-  eventify:
-    dependency: transitive
-    description:
-      name: eventify
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -114,6 +149,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.6.5"
+  http:
+    dependency: transitive
+    description:
+      name: http
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.13.5"
+  http_parser:
+    dependency: transitive
+    description:
+      name: http_parser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.1"
   js:
     dependency: transitive
     description:
@@ -121,41 +170,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.4"
-  just_audio:
-    dependency: transitive
-    description:
-      name: just_audio
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.9.29"
-  just_audio_mpv:
-    dependency: transitive
-    description:
-      name: just_audio_mpv
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.4"
-  just_audio_platform_interface:
-    dependency: transitive
-    description:
-      name: just_audio_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.2.0"
-  just_audio_web:
-    dependency: transitive
-    description:
-      name: just_audio_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.7"
-  just_audio_windows:
-    dependency: transitive
-    description:
-      name: just_audio_windows
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.0"
   lints:
     dependency: transitive
     description:
@@ -184,13 +198,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
-  mpv_dart:
-    dependency: transitive
-    description:
-      name: mpv_dart
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1"
   mutex:
     dependency: transitive
     description:
@@ -282,13 +289,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.4"
-  rxdart:
-    dependency: transitive
-    description:
-      name: rxdart
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.27.5"
   sky_engine:
     dependency: transitive
     description: flutter
