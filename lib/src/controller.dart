@@ -39,6 +39,9 @@ class NovelController extends GetxController {
   /// Calls the [Navigator.pop], if `null`.
   final void Function()? onEnd;
 
+  /// Currently played [AssetSource] of the [voice] player.
+  AssetSource? _voiceSource;
+
   @override
   void onInit() {
     thread();
@@ -68,6 +71,8 @@ class NovelController extends GetxController {
       line = scenario.at(currentLine.value);
       currentLine.value = currentLine.value + 1;
 
+      AssetSource? previousVoiceSource = _voiceSource;
+
       if (line is AddObjectLine) {
         Log.print('Adding ${line.object} to the scene');
 
@@ -85,7 +90,8 @@ class NovelController extends GetxController {
           objects.removeWhere((e) => e is Dialogue);
 
           if (line.voice != null) {
-            voice.play(AssetSource('${Novel.voices}/${line.voice}'));
+            _voiceSource = AssetSource('${Novel.voices}/${line.voice}');
+            voice.play(_voiceSource!);
           }
 
           line.object.key = previous?.key ?? line.object.key;
@@ -117,7 +123,8 @@ class NovelController extends GetxController {
       }
 
       if (line is Awaitable) {
-        if (voice.state != PlayerState.stopped) {
+        if (previousVoiceSource == _voiceSource &&
+            voice.state != PlayerState.stopped) {
           voice.stop();
         }
 

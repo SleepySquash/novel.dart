@@ -11,3 +11,11 @@ class BackgroundLine extends AddObjectLine {
   @override
   Future<void> execute() => object.init();
 }
+
+class HideBackgroundLine extends RemoveObjectLine {
+  HideBackgroundLine(
+    String asset, {
+    bool wait = true,
+    Duration duration = const Duration(milliseconds: 500),
+  }) : super(Background(asset, duration: duration), wait: wait);
+}
