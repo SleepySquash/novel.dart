@@ -14,19 +14,20 @@ import 'object/background.dart';
 import 'object/character.dart';
 import 'object/dialogue.dart';
 import 'util/log.dart';
+import 'util/rxsplay.dart';
 import 'view.dart';
 
 class NovelController extends GetxController {
   NovelController(this.scenario, {this.onEnd});
 
-  /// [Scenario] being read in this [NovelController].
+  /// [Scenario] being read.
   final Scenario scenario;
 
-  /// Currently executed [NovelLine] of the [scenario].
+  /// Index of the currently executed [NovelLine] in the [scenario].
   final RxInt currentLine = RxInt(0);
 
-  /// [NovelObject]s to display in the view.
-  final RxList<NovelObject> objects = RxList();
+  final ObjectComposition layers = ObjectComposition();
+  final List<Future<dynamic>> holds = [];
 
   /// [AudioPlayer] playing the voice lines.
   final AudioPlayer voice = AudioPlayer(playerId: 'voice');
@@ -77,46 +78,45 @@ class NovelController extends GetxController {
         Log.print('Adding ${line.object} to the scene');
 
         if (line is BackgroundLine) {
-          objects.removeWhere((e) => e is Background);
-          objects.insert(0, line.object);
+          layers.removeOf<BackgroundObject>();
+          layers.add(line.object, 0);
         } else if (line.object is BackdropRect) {
-          objects.removeWhere((e) => e is BackdropRect);
-          objects.insert(0, line.object);
+          layers.removeOf<BackdropRect>();
+          layers.add(line.object, 0);
         } else if (line is CharacterLine) {
-          objects.add(line.object);
+          layers.add(line.object, 16000);
         } else if (line is DialogueLine) {
-          NovelObject? previous =
-              objects.firstWhereOrNull((e) => e is Dialogue);
-          objects.removeWhere((e) => e is Dialogue);
-
           if (line.voice != null) {
             _voiceSource = AssetSource('${Novel.voices}/${line.voice}');
             voice.play(_voiceSource!);
           }
 
-          line.object.key = previous?.key ?? line.object.key;
-          objects.add(line.object);
+          layers.removeOf<Dialogue>();
+          layers.add(line.object, 32000);
         } else {
-          objects.add(line.object);
+          layers.add(line.object);
         }
       } else if (line is RemoveObjectLine) {
         Log.print('Removing ${line.object} from the scene');
 
         NovelObject object = line.object;
-        if (object is Background) {
-          objects
-              .removeWhere((e) => e is Background && e.asset == object.asset);
+        if (object is BackgroundObject) {
+          layers.removeWhere(
+            (e) => e is BackgroundObject && e.asset == object.asset,
+          );
         } else if (object is BackdropRect) {
-          objects.removeWhere((e) => e is BackdropRect);
-        } else if (object is Character) {
-          objects.removeWhere((e) => e is Character && e.asset == object.asset);
+          layers.removeWhere((e) => e is BackdropRect);
+        } else if (object is CharacterObject) {
+          layers.removeWhere(
+            (e) => e is CharacterObject && e.asset == object.asset,
+          );
         }
       } else if (line is WaitLine) {
         Log.print('Waiting for ${line.duration}');
       } else if (line is MusicLine) {
         Log.print('Playing ${line.asset}');
         ambient.setReleaseMode(ReleaseMode.loop);
-        ambient.play(AssetSource('${Novel.musics}/${line.asset}'));
+        ambient.play(AssetSource('${Novel.musics}/${line.asset}'), volume: 0.4);
       } else if (line is StopMusicLine) {
         Log.print('Stopping any music being played');
         ambient.stop();
@@ -132,9 +132,46 @@ class NovelController extends GetxController {
           await line.execute();
         }
       }
+
+      if (line is DialogueLine) {
+        layers.removeOf<Dialogue>();
+      }
     } while (line != null);
 
     onEnd?.call();
     Log.print('Thread 0 ended');
+  }
+}
+
+class ObjectComposition {
+  /// [NovelObject]s this [ObjectComposition] contains.
+  final RxSplayTreeMap<int, List<NovelObject>> objects = RxSplayTreeMap();
+
+  void add(NovelObject object, [int depth = 0]) {
+    List<NovelObject>? list = objects[depth];
+    if (list == null) {
+      objects[depth] = [object];
+    } else {
+      objects[depth]?.add(object);
+      objects.refresh();
+    }
+  }
+
+  void remove(NovelObject object) {
+    objects.removeWhere((_, v) => v.remove(object));
+  }
+
+  void removeOf<T>() {
+    objects.removeWhere((_, e) {
+      e.removeWhere((m) => m is T);
+      return e.isEmpty;
+    });
+  }
+
+  void removeWhere(bool Function(NovelObject) test) {
+    objects.removeWhere((_, e) {
+      e.removeWhere(test);
+      return e.isEmpty;
+    });
   }
 }

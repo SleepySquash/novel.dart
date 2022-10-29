@@ -22,3 +22,5 @@ flutter:
   assets:
     - assets/background/
     - assets/character/
+    - assets/music/
+    - assets/voice/

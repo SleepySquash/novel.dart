@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
                     context: context,
                     scenario: [
                       //
+                      const MusicLine('mixkit-summer-fun-13.mp3'),
                       BackgroundLine('apartment_day.jpg'),
                       DialogueLine('Я сидел, пил пепси колу.'),
                       DialogueLine(
@@ -40,13 +41,23 @@ class MyApp extends StatelessWidget {
                       DialogueLine('На улице, как всегда, очень шумно.'),
                       DialogueLine('Люди бегают туда-сюда, солнце печёт.'),
                       DialogueLine('Уже совсем рядом с магазином...'),
-                      CharacterLine('72946537_p5.png'),
-                      DialogueLine('А-ай!!', by: 'Тян'),
+                      CharacterLine('72946537_p5.png', position: 0.5),
+                      CharacterLine('72946537_p3.png', position: -0.5),
+                      DialogueLine(
+                        'А-ай!!',
+                        by: 'Тян',
+                        voice: 'oh.mp3',
+                      ),
                       DialogueLine('П-прошу прощения!', by: 'Я'),
-                      DialogueLine('Смотри, куда идёшь! Бака!', by: 'Тян'),
+                      DialogueLine(
+                        'Смотри, куда идёшь! Бака!',
+                        by: 'Тян',
+                        voice: 'okay.mp3',
+                      ),
                       DialogueLine(
                           'Как обычно, задумавшись о своём, я не заметил, куда шёл и случайно чуть не сбил с ног эту очаровашку.'),
                       HideCharacterLine('72946537_p5.png'),
+                      HideCharacterLine('72946537_p3.png'),
                       DialogueLine(
                           'Опустив голову ниже плинтуса, я пошёл дальше...'),
                     ],

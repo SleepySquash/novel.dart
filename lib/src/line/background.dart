@@ -6,7 +6,7 @@ class BackgroundLine extends AddObjectLine {
     String asset, {
     bool wait = true,
     Duration duration = const Duration(milliseconds: 500),
-  }) : super(Background(asset, duration: duration), wait: wait);
+  }) : super(BackgroundObject(asset, duration: duration), wait: wait);
 
   @override
   Future<void> execute() => object.init();
@@ -17,5 +17,5 @@ class HideBackgroundLine extends RemoveObjectLine {
     String asset, {
     bool wait = true,
     Duration duration = const Duration(milliseconds: 500),
-  }) : super(Background(asset, duration: duration), wait: wait);
+  }) : super(BackgroundObject(asset, duration: duration), wait: wait);
 }

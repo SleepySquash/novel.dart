@@ -15,8 +15,13 @@ mixin Awaitable on Line {
 
 /// [Line] adding the provided [object] to the scene.
 class AddObjectLine extends Line with Awaitable {
-  const AddObjectLine(this.object, {this.wait = true});
+  const AddObjectLine(
+    this.object, {
+    this.wait = true,
+    this.depth = 0,
+  });
 
+  final int depth;
   final NovelObject object;
 
   @override

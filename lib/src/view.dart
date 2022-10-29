@@ -3,16 +3,8 @@ import 'package:get/get.dart';
 
 import 'controller.dart';
 import 'core/line.dart';
-import 'core/object.dart';
 import 'core/scenario.dart';
-import 'object/backdrop.dart';
-import 'object/background.dart';
-import 'object/character.dart';
-import 'object/dialogue.dart';
 import 'util/log.dart';
-import 'widget/animated_backdrop.dart';
-import 'widget/delayed_opacity.dart';
-import 'widget/dialogue.dart';
 
 class Novel extends StatelessWidget {
   const Novel({
@@ -36,6 +28,10 @@ class Novel extends StatelessWidget {
   static String characters = 'assets/character';
   static String voices = 'voice';
   static String musics = 'music';
+
+  static int backgroundDepth = 0;
+  static int characterDepth = 16000;
+  static int dialogueDepth = 32000;
 
   /// Displays a dialog with the provided [scenario] above the current contents.
   static Future<T?> show<T extends Object?>({
@@ -74,69 +70,15 @@ class Novel extends StatelessWidget {
         onEnd: onEnd ?? Navigator.of(context).pop,
       ),
       builder: (NovelController c) {
-        return Obx(
-          () => Stack(
-            children: c.objects.map((e) => _buildObject(c, e)).toList(),
-          ),
-        );
+        return Obx(() {
+          return Stack(
+            children: c.layers.objects.value.values
+                .expand((e) => e)
+                .map((e) => e.build(context))
+                .toList(),
+          );
+        });
       },
     );
-  }
-
-  /// Builds a [Widget] representation of the provided [NovelObject].
-  Widget _buildObject(NovelController c, NovelObject e) {
-    if (e is Background) {
-      return Positioned.fill(
-        key: e.key,
-        child: AnimatedDelayedOpacity(
-          duration: e.duration,
-          onEnd: e.unlock,
-          child: Image(
-            image: AssetImage('$backgrounds/${e.asset}'),
-            fit: BoxFit.cover,
-          ),
-        ),
-      );
-    } else if (e is Character) {
-      return Align(
-        key: e.key,
-        alignment: Alignment.bottomCenter,
-        child: AnimatedDelayedOpacity(
-          duration: e.duration,
-          onEnd: e.unlock,
-          child: SizedBox(
-            height: double.infinity,
-            child: Image(
-              image: AssetImage('$characters/${e.asset}'),
-              fit: BoxFit.fitHeight,
-            ),
-          ),
-        ),
-      );
-    } else if (e is Dialogue) {
-      return Align(
-        key: e.key,
-        alignment: Alignment.bottomCenter,
-        child: GestureDetector(
-          onTap: () {
-            e.unlock();
-            Future.delayed(Duration.zero, () {
-              if (c.objects.firstWhereOrNull((e) => e is Dialogue) == null) {
-                c.objects.remove(e);
-              }
-            });
-          },
-          child: DialogueWidget(text: e.text, by: e.by),
-        ),
-      );
-    } else if (e is BackdropRect) {
-      return AnimatedBackdropFilter(
-        duration: e.duration,
-        onEnd: e.unlock,
-        child: Container(),
-      );
-    }
-
-    return Container();
   }
 }
