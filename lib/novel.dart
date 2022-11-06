@@ -6,6 +6,8 @@ export 'src/core/scenario.dart';
 export 'src/line/background.dart';
 export 'src/line/character.dart';
 export 'src/line/dialogue.dart';
+export 'src/line/execute.dart';
+export 'src/line/music.dart';
 export 'src/line/wait.dart';
 export 'src/object/backdrop.dart';
 export 'src/object/background.dart';
